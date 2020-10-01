@@ -11,8 +11,10 @@ import com.example.android_hangman_game.Extensions.printWordUnderscores
 import com.example.android_hangman_game.Extensions.whatWillHappen
 import com.example.android_hangman_game.data.CharsArray
 import com.example.android_hangman_game.data.GameData.lives
+import com.example.android_hangman_game.data.GameData.savedPlayersScore
 import com.example.android_hangman_game.data.GameData.triedChars
 import com.example.android_hangman_game.data.GameData.weArePlaying
+import com.example.android_hangman_game.data.WinnersModel
 import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
@@ -23,35 +25,45 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
         game()
     }
+    @SuppressLint("SetTextI18n")
     private fun game(){
-        init()
-       // while (weArePlaying) {
+        var playerName = intent.getStringExtra("playerName")
+        var word =  intent.getStringExtra("incognitoWord")
+        if (playerName == null||word==null) {
+            playerName = "jhb531454"
+            word = "sdfsdfdsf"
+        }
 
-//        if (lives<=0){
-//            Tools.winDialog(this@GameActivity, 0)
-//         //   println("Sorry, you lost… The word was: $Word")
-//            println("Want to play again? (Y/N/H) ")
-//            whatWillHappen()
-//        }
-//        if(!allUnderscoreIsNotOpened){
-//            Tools.winDialog(this@GameActivity, 1)
-//            println("Congratulations! Want to play again? (Y, H or N:")
-//            whatWillHappen()
-//        }
-       // }
+        while (weArePlaying) {
+        textViewID.text = """Hello $playerName, Let’s play Hangman!"""
+        livesTextViewID.text = "Lives: $lives"
+        val incognitoWord = word.printWordUnderscores()
+
+
+        inputCharAndCheck(word,incognitoWord)
+
+        savedPlayersScore.add(WinnersModel(playerName, lives))
+
+
+        if (lives<=0){
+            Tools.winDialog(this@GameActivity, 0)
+         //   println("Sorry, you lost… The word was: $Word")
+           // println("Want to play again? (Y/N/H) ")
+            whatWillHappen(this)
+        }
+        if(!allUnderscoreIsNotOpened){
+            //Tools.winDialog(this@GameActivity, 1)
+           // println("Congratulations! Want to play again? (Y, H or N:")
+            whatWillHappen(this)
+        }
+      }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun init(){
-        var playerName = intent.getStringExtra("playerName")
-        var Word =  intent.getStringExtra("incognitoWord")
-        if (playerName == null||Word==null) {
-            playerName = "jhb531454"
-            Word = "sdfsdfdsf"
-        }
-        textViewID.text = """Hello $playerName, Let’s play Hangman!"""
-        livesTextViewID.text = "Lives: $lives"
-        val incognitoWord = Word.printWordUnderscores()
+    private fun inputCharAndCheck(Word: String, incognitoWord: CharArray){
+
+
+
         showTextViewID.text =printWithSpacesChars(incognitoWord)
 
         TryButtonID.setOnClickListener {
