@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/colorTransparent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialogTitleTextViewID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="35dp"
+        android:text="@string/youWin"
+        android:textColor="@color/colorGreen"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+
+    <ImageView
+        android:id="@+id/imageViewWinOrLoseID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/king" />
+
+
+    <Button
+        android:id="@+id/dialogOkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_gravity="bottom|center"
+        android:background="@drawable/button"
+        android:text="@string/ok"
+        android:textAllCaps="false"
+        android:textColor="@color/colorGreen"
+        android:textSize="30sp"
+        />
+</FrameLayout>
