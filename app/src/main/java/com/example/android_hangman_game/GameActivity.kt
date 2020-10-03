@@ -34,7 +34,7 @@ class GameActivity : AppCompatActivity() {
             word = "sdfsdfdsf"
         }
 
-        while (weArePlaying) {
+
         textViewID.text = """Hello $playerName, Let’s play Hangman!"""
         livesTextViewID.text = "Lives: $lives"
         val incognitoWord = word.printWordUnderscores()
@@ -56,7 +56,7 @@ class GameActivity : AppCompatActivity() {
            // println("Congratulations! Want to play again? (Y, H or N:")
             whatWillHappen(this)
         }
-      }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -67,6 +67,8 @@ class GameActivity : AppCompatActivity() {
         showTextViewID.text =printWithSpacesChars(incognitoWord)
 
         TryButtonID.setOnClickListener {
+
+
             val inputWord =  EditTextID.text.toString()
             val inputtedCharInWord = if (inputWord.length==1)inputWord[0]else '*'
 
@@ -77,6 +79,7 @@ class GameActivity : AppCompatActivity() {
                     allUnderscoreIsNotOpened = true
                     textViewID.text =  "You already tried this character"
                     livesTextViewID.text = "Lives: $lives "
+                    EditTextID.setText("")
                 }
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //////////// ვამოწმებთ არის თუ არა ლათინური ალფაბეტური ////////////////////////////////////////////////////////////////////
@@ -98,6 +101,10 @@ class GameActivity : AppCompatActivity() {
                             allUnderscoreIsNotOpened = true
                         }
 
+
+                    }
+                    if (!allUnderscoreIsNotOpened){
+                        Tools.winDialog(this@GameActivity, 1)
                     }
                     when {
                         charIsNotHere -> {
@@ -113,17 +120,23 @@ class GameActivity : AppCompatActivity() {
                     livesTextViewID.text = "Lives: $lives "
                     //showTextViewID.text = incognitoWord.contentToString() ///ვბეჭდავთ ნაწილობრივ გამოცნობილ/დაფარულ სიტყვას/////
                     showTextViewID.text =printWithSpacesChars(incognitoWord)
-
+                    EditTextID.setText("")
                 }
                 else -> {
                     ///////////////////////////// თუ არ არის ალფაბეტური, მაშინ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     textViewID.setTextColor(Color.RED)
                     textViewID.text = "Please, enter a valid character"
                     allUnderscoreIsNotOpened = true
+                    EditTextID.setText("")
                 }
             }
 
-
+            if (lives<=0){
+                Tools.winDialog(this@GameActivity, 0)
+                //   println("Sorry, you lost… The word was: $Word")
+                // println("Want to play again? (Y/N/H) ")
+                whatWillHappen(this)
+            }
 
 
 
