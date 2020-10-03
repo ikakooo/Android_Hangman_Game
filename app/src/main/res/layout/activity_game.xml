@@ -41,7 +41,10 @@
             android:maxLength="1"
             android:textColor="@color/colorAccentGreen"
             android:textSize="50sp"
-            tools:text="H" />
+            tools:text="H"
+            android:autofillHints="@string/todo"
+            android:inputType="text"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/showTextViewID"

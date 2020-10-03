@@ -7,7 +7,7 @@ import com.example.android_hangman_game.data.GameData.savedPlayersScore
 import com.example.android_hangman_game.data.GameData.triedChars
 import com.example.android_hangman_game.data.GameData.weArePlaying
 import kotlinx.android.synthetic.main.activity_game.*
-import java.security.AccessControlContext
+
 
 object Extensions {
     fun String.printWordUnderscores(): CharArray {

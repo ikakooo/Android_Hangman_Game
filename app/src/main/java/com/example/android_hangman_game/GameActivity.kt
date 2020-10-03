@@ -13,13 +13,12 @@ import com.example.android_hangman_game.data.CharsArray
 import com.example.android_hangman_game.data.GameData.lives
 import com.example.android_hangman_game.data.GameData.savedPlayersScore
 import com.example.android_hangman_game.data.GameData.triedChars
-import com.example.android_hangman_game.data.GameData.weArePlaying
 import com.example.android_hangman_game.data.WinnersModel
 import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
-    var allUnderscoreIsNotOpened = true
-    var charIsNotHere = true
+    private var allUnderscoreIsNotOpened = true
+    private var charIsNotHere = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
