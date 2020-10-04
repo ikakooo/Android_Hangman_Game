@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import com.example.android_hangman_game.Extensions.isAlphabetOrNot
 import com.example.android_hangman_game.Extensions.isTriedCharacter
 import com.example.android_hangman_game.Extensions.printWithSpacesChars
