@@ -156,10 +156,14 @@ class GameActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun showTopPlayer(){
         val dB = roomDB.favoriteDaoConnection().getTopPlayers().toMutableList()
         (0 until dB.size).forEach {
-            //  listTextViewID.text(RoomFavouriteMovieModel(dB[it].id?.toLong(),dB[it].movie_id.toString(),dB[it].path.toString(),dB[it].title.toString()))
+            val string =  listTextViewID.text.toString()
+            listTextViewID.text = "$string\n${it+1})  ${dB[it].WinnerName} - ${dB[it].WinnerLives} Lives"
+
+
         }
     }
 
