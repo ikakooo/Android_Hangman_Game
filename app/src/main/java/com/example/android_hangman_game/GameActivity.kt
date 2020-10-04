@@ -14,6 +14,8 @@ import com.example.android_hangman_game.data.GameData.lives
 import com.example.android_hangman_game.data.GameData.savedPlayersScore
 import com.example.android_hangman_game.data.GameData.triedChars
 import com.example.android_hangman_game.data.WinnersModel
+import com.example.android_hangman_game.local_data_base.DatabaseBuilder.roomDB
+import com.example.android_hangman_game.local_data_base.RoomTopPlayerModel
 import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
@@ -23,12 +25,14 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
         game()
+        showTopPlayer()
     }
+
     @SuppressLint("SetTextI18n")
-    private fun game(){
+    private fun game() {
         var playerName = intent.getStringExtra("playerName")
-        var word =  intent.getStringExtra("incognitoWord")
-        if (playerName == null||word==null) {
+        var word = intent.getStringExtra("incognitoWord")
+        if (playerName == null || word == null) {
             playerName = "jhb531454"
             word = "sdfsdfdsf"
         }
@@ -39,51 +43,59 @@ class GameActivity : AppCompatActivity() {
         val incognitoWord = word.printWordUnderscores()
 
 
-        inputCharAndCheck(word,incognitoWord)
+        inputCharAndCheck(word, incognitoWord)
 
-        savedPlayersScore.add(WinnersModel(playerName, lives))
+        // savedPlayersScore.add(WinnersModel(playerName, lives))
+        roomDB.favoriteDaoConnection().insertRoomTopPlayersModel(
+            RoomTopPlayerModel(
+                WinnerName = playerName,
+                WinnerLives = lives
+            )
+        )
 
 
-        if (lives<=0){
+        // insertRoomFavouriteMovieModel(RoomFavouriteMovieModel(movie_id = response.id, path = response.poster_path, title = response.original_title))
+
+
+        if (lives <= 0) {
             Tools.winDialog(this@GameActivity, 0)
-         //   println("Sorry, you lost… The word was: $Word")
-           // println("Want to play again? (Y/N/H) ")
+            //   println("Sorry, you lost… The word was: $Word")
+            // println("Want to play again? (Y/N/H) ")
             whatWillHappen(this)
         }
-        if(!allUnderscoreIsNotOpened){
+        if (!allUnderscoreIsNotOpened) {
             //Tools.winDialog(this@GameActivity, 1)
-           // println("Congratulations! Want to play again? (Y, H or N:")
+            // println("Congratulations! Want to play again? (Y, H or N:")
             whatWillHappen(this)
         }
 
     }
 
     @SuppressLint("SetTextI18n")
-    private fun inputCharAndCheck(Word: String, incognitoWord: CharArray){
+    private fun inputCharAndCheck(Word: String, incognitoWord: CharArray) {
 
 
-
-        showTextViewID.text =printWithSpacesChars(incognitoWord)
+        showTextViewID.text = printWithSpacesChars(incognitoWord)
 
         TryButtonID.setOnClickListener {
 
 
-            val inputWord =  EditTextID.text.toString()
-            val inputtedCharInWord = if (inputWord.length==1)inputWord[0]else '*'
+            val inputWord = EditTextID.text.toString()
+            val inputtedCharInWord = if (inputWord.length == 1) inputWord[0] else '*'
 
             allUnderscoreIsNotOpened = false
 
             when {
                 isTriedCharacter(inputtedCharInWord) && inputtedCharInWord != '*' -> {
                     allUnderscoreIsNotOpened = true
-                    textViewID.text =  "You already tried this character"
+                    textViewID.text = "You already tried this character"
                     livesTextViewID.text = "Lives: $lives "
                     EditTextID.setText("")
                 }
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //////////// ვამოწმებთ არის თუ არა ლათინური ალფაბეტური ////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                isAlphabetOrNot(inputtedCharInWord)  && inputtedCharInWord != '*' -> {
+                isAlphabetOrNot(inputtedCharInWord) && inputtedCharInWord != '*' -> {
                     /////////////// შევდივრთ ციკლში სადაც ხდება შეყვანილი ჩარაქთერის შემმოწმება/შედარება/ვალიდაცია/დამატება/დამახსოვრება   //////////////////
                     (Word.indices).forEach {
                         if (inputtedCharInWord.toLowerCase() == Word[it].toLowerCase()) {
@@ -102,23 +114,23 @@ class GameActivity : AppCompatActivity() {
 
 
                     }
-                    if (!allUnderscoreIsNotOpened){
+                    if (!allUnderscoreIsNotOpened) {
                         Tools.winDialog(this@GameActivity, 1)
                     }
                     when {
                         charIsNotHere -> {
                             textViewID.setTextColor(Color.RED)
-                            textViewID.text ="There is no such character"
+                            textViewID.text = "There is no such character"
                             lives--
                             triedChars.add(CharsArray(inputtedCharInWord.toLowerCase()))
                             triedChars.add(CharsArray(inputtedCharInWord.toUpperCase()))
                         }
-                        else ->textViewID.text ="Yes, it is there!!!"
+                        else -> textViewID.text = "Yes, it is there!!!"
                     }
                     charIsNotHere = true
                     livesTextViewID.text = "Lives: $lives "
                     //showTextViewID.text = incognitoWord.contentToString() ///ვბეჭდავთ ნაწილობრივ გამოცნობილ/დაფარულ სიტყვას/////
-                    showTextViewID.text =printWithSpacesChars(incognitoWord)
+                    showTextViewID.text = printWithSpacesChars(incognitoWord)
                     EditTextID.setText("")
                 }
                 else -> {
@@ -130,7 +142,7 @@ class GameActivity : AppCompatActivity() {
                 }
             }
 
-            if (lives<=0){
+            if (lives <= 0) {
                 Tools.winDialog(this@GameActivity, 0)
                 //   println("Sorry, you lost… The word was: $Word")
                 // println("Want to play again? (Y/N/H) ")
@@ -138,13 +150,17 @@ class GameActivity : AppCompatActivity() {
             }
 
 
-
         }
-
 
 
     }
 
 
+    private fun showTopPlayer(){
+        val dB = roomDB.favoriteDaoConnection().getTopPlayers().toMutableList()
+        (0 until dB.size).forEach {
+            //  listTextViewID.text(RoomFavouriteMovieModel(dB[it].id?.toLong(),dB[it].movie_id.toString(),dB[it].path.toString(),dB[it].title.toString()))
+        }
+    }
 
 }

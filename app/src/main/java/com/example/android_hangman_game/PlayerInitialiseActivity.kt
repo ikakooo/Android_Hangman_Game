@@ -3,6 +3,7 @@ package com.example.android_hangman_game
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.android_hangman_game.local_data_base.DatabaseBuilder.roomDB
 import kotlinx.android.synthetic.main.activity_initialise_player.*
 
 class PlayerInitialiseActivity : AppCompatActivity() {
@@ -10,6 +11,7 @@ class PlayerInitialiseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initialise_player)
         init()
+        showTopPlayer()
     }
 
 
@@ -33,6 +35,13 @@ class PlayerInitialiseActivity : AppCompatActivity() {
         intent.putExtra("incognitoWord", incognitoWord)
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+
+    private fun showTopPlayer(){
+        val dB = roomDB.favoriteDaoConnection().getTopPlayers().toMutableList()
+        (0 until dB.size).forEach {
+          //  listTextViewID.text(RoomFavouriteMovieModel(dB[it].id?.toLong(),dB[it].movie_id.toString(),dB[it].path.toString(),dB[it].title.toString()))
+        }
     }
 
 
