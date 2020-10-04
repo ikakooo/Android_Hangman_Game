@@ -3,6 +3,7 @@ package com.example.android_hangman_game
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.android_hangman_game.Extensions.showTopPlayer
 import com.example.android_hangman_game.local_data_base.DatabaseBuilder.roomDB
 import kotlinx.android.synthetic.main.activity_initialise_player.*
 
@@ -12,6 +13,8 @@ class PlayerInitialiseActivity : AppCompatActivity() {
         setContentView(R.layout.activity_initialise_player)
         init()
         showTopPlayer()
+
+        InitListTextViewID.showTopPlayer(10)
     }
 
 

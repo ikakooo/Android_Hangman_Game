@@ -10,7 +10,7 @@ interface TopPlayerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRoomTopPlayersModel(TopPlayers: RoomTopPlayerModel)
 
-    @Query("select * from top_players ORDER BY WinnerLives ASC,WinnerLives DESC; ")
+    @Query("select * from top_players ORDER BY WinnerLives DESC,WinnerLives ASC; ")
     fun getTopPlayers(): List<RoomTopPlayerModel>
 
     @Query("delete from top_players where WinnerName = :id")

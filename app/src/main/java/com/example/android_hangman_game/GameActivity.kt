@@ -25,7 +25,7 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
         game()
-        listTextViewID.showTopPlayer()
+        listTextViewID.showTopPlayer(7)
     }
 
     @SuppressLint("SetTextI18n")
@@ -43,7 +43,7 @@ class GameActivity : AppCompatActivity() {
         val incognitoWord = word.printWordUnderscores()
 
 
-        inputCharAndCheck(word, incognitoWord)
+        inputCharAndCheck(word, incognitoWord,playerName)
 
         // savedPlayersScore.add(WinnersModel(playerName, lives))
 
@@ -69,7 +69,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun inputCharAndCheck(Word: String, incognitoWord: CharArray) {
+    private fun inputCharAndCheck(Word: String, incognitoWord: CharArray,playerName:String) {
 
 
         showTextViewID.text = printWithSpacesChars(incognitoWord)
@@ -113,6 +113,8 @@ class GameActivity : AppCompatActivity() {
                     }
                     if (!allUnderscoreIsNotOpened) {
                         Tools.winDialog(this@GameActivity, 1)
+                        addPlayerInDB(playerName)
+                        triedChars.clear()
                     }
                     when {
                         charIsNotHere -> {
@@ -141,6 +143,8 @@ class GameActivity : AppCompatActivity() {
 
             if (lives <= 0) {
                 Tools.winDialog(this@GameActivity, 0)
+                addPlayerInDB(playerName)
+                triedChars.clear()
                 //   println("Sorry, you lost… The word was: $Word")
                 // println("Want to play again? (Y/N/H) ")
                 whatWillHappen(this)

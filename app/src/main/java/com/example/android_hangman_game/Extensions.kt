@@ -67,9 +67,9 @@ object Extensions {
     }
 
     @SuppressLint("SetTextI18n")
-    fun TextView.showTopPlayer() {
+    fun TextView.showTopPlayer(count:Int) {
         val dB = DatabaseBuilder.roomDB.favoriteDaoConnection().getTopPlayers().toMutableList()
-        (0 until dB.size).forEach {
+        (0 until if (dB.size<count)dB.size else count ).forEach {
             val string = text.toString()
             text = "$string\n${it + 1})  ${dB[it].WinnerName} - ${dB[it].WinnerLives} Lives"
 
