@@ -2,10 +2,12 @@ package com.example.android_hangman_game
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.widget.TextView
 import com.example.android_hangman_game.data.GameData.lives
 import com.example.android_hangman_game.data.GameData.savedPlayersScore
 import com.example.android_hangman_game.data.GameData.triedChars
 import com.example.android_hangman_game.data.GameData.weArePlaying
+import com.example.android_hangman_game.local_data_base.DatabaseBuilder
 import kotlinx.android.synthetic.main.activity_game.*
 
 
@@ -48,7 +50,8 @@ object Extensions {
                 savedPlayersScore.sortBy { it.WinnerLives }
                 val reversed = savedPlayersScore.asReversed()
                 reversed.indices.forEach {
-                    if (it < 5) context.listTextViewID.text = "${it + 1})  ${reversed[it].WinnerName} - ${reversed[it].WinnerLives} Lives"
+                    if (it < 5) context.listTextViewID.text =
+                        "${it + 1})  ${reversed[it].WinnerName} - ${reversed[it].WinnerLives} Lives"
                 }
 
                 context.textViewID.text = "Want to play again? (Y/N/H): "
@@ -60,6 +63,17 @@ object Extensions {
                 context.textViewID.text = "Thanks for playing!"
 
             }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun TextView.showTopPlayer() {
+        val dB = DatabaseBuilder.roomDB.favoriteDaoConnection().getTopPlayers().toMutableList()
+        (0 until dB.size).forEach {
+            val string = text.toString()
+            text = "$string\n${it + 1})  ${dB[it].WinnerName} - ${dB[it].WinnerLives} Lives"
+
+
         }
     }
 

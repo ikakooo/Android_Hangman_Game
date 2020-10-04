@@ -4,16 +4,16 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import com.example.android_hangman_game.Extensions.isAlphabetOrNot
 import com.example.android_hangman_game.Extensions.isTriedCharacter
 import com.example.android_hangman_game.Extensions.printWithSpacesChars
 import com.example.android_hangman_game.Extensions.printWordUnderscores
+import com.example.android_hangman_game.Extensions.showTopPlayer
 import com.example.android_hangman_game.Extensions.whatWillHappen
 import com.example.android_hangman_game.data.CharsArray
 import com.example.android_hangman_game.data.GameData.lives
-import com.example.android_hangman_game.data.GameData.savedPlayersScore
 import com.example.android_hangman_game.data.GameData.triedChars
-import com.example.android_hangman_game.data.WinnersModel
 import com.example.android_hangman_game.local_data_base.DatabaseBuilder.roomDB
 import com.example.android_hangman_game.local_data_base.RoomTopPlayerModel
 import kotlinx.android.synthetic.main.activity_game.*
@@ -25,7 +25,7 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
         game()
-        showTopPlayer()
+        listTextViewID.showTopPlayer()
     }
 
     @SuppressLint("SetTextI18n")
@@ -46,12 +46,7 @@ class GameActivity : AppCompatActivity() {
         inputCharAndCheck(word, incognitoWord)
 
         // savedPlayersScore.add(WinnersModel(playerName, lives))
-        roomDB.favoriteDaoConnection().insertRoomTopPlayersModel(
-            RoomTopPlayerModel(
-                WinnerName = playerName,
-                WinnerLives = lives
-            )
-        )
+
 
 
         // insertRoomFavouriteMovieModel(RoomFavouriteMovieModel(movie_id = response.id, path = response.poster_path, title = response.original_title))
@@ -62,11 +57,13 @@ class GameActivity : AppCompatActivity() {
             //   println("Sorry, you lost… The word was: $Word")
             // println("Want to play again? (Y/N/H) ")
             whatWillHappen(this)
+            addPlayerInDB(playerName)
         }
         if (!allUnderscoreIsNotOpened) {
             //Tools.winDialog(this@GameActivity, 1)
             // println("Congratulations! Want to play again? (Y, H or N:")
             whatWillHappen(this)
+            addPlayerInDB(playerName)
         }
 
     }
@@ -156,15 +153,13 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("SetTextI18n")
-    private fun showTopPlayer(){
-        val dB = roomDB.favoriteDaoConnection().getTopPlayers().toMutableList()
-        (0 until dB.size).forEach {
-            val string =  listTextViewID.text.toString()
-            listTextViewID.text = "$string\n${it+1})  ${dB[it].WinnerName} - ${dB[it].WinnerLives} Lives"
-
-
-        }
+    private fun addPlayerInDB(playerName:String){
+        roomDB.favoriteDaoConnection().insertRoomTopPlayersModel(
+            RoomTopPlayerModel(
+                WinnerName = playerName,
+                WinnerLives = lives
+            )
+        )
     }
 
 }
