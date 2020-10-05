@@ -72,9 +72,6 @@ object Extensions {
         (0 until if (dB.size<count)dB.size else count ).forEach {
             val string = text.toString()
             text = "$string\n${it + 1})  ${dB[it].WinnerName} - ${dB[it].WinnerLives} Lives"
-
-
         }
     }
-
 }

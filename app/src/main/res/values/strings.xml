@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Android_Hangman_Game</string>
-    <string name="enter_player_name"> . -> Enter Player Name   .</string>
-    <string name="enter_incognito_word"> . -> Enter Incognito Word   .</string>
+    <string name="app_name">Hangman</string>
+    <string name="enter_player_name"> -> Enter Player Name</string>
+    <string name="enter_incognito_word"> -> Enter Incognito Word </string>
     <string name="start_game">Start Game</string>
     <string name="tray">Try</string>
     <string name="todo">TODO</string>
